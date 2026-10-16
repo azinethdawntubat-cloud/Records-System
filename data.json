@@ -1,0 +1,105 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "System Administrator",
+      "email": "admin@school.com",
+      "username": "admin",
+      "password": "scrypt:32768:8:1$u1H1ZxaWolNCJgXk$af45a60bb0421198179c889b84ded1f1e58c0fd4caa5464d86750c03e30288e1dcbceb16027627b2ef5e98a9815dcd3aa4ec24847bcde76635b526c4a41844a6",
+      "role": "admin",
+      "student_id": "",
+      "course": "",
+      "year_level": "",
+      "teacher_ids": []
+    },
+    {
+      "id": 2,
+      "name": "Von Rheeven V. Belza",
+      "email": "rheevenbelza@gmail.com",
+      "username": "Von",
+      "password": "scrypt:32768:8:1$dJmCgGk2vp0slSgF$00a1decafdef763a63ec94fcbf385737d949a12be6b9e753acab115496f3eac0714ad809bc4344af3b06c92e70ea273ea4f3c66d0561ebf36785a0e522fd1d1d",
+      "role": "teacher",
+      "student_id": "",
+      "year_level": "",
+      "course": "Bachelor of Science in Computer Science",
+      "teacher_ids": []
+    },
+    {
+      "id": 4,
+      "name": "Watson Targe",
+      "email": "Watson@gmail.com",
+      "username": "Watson",
+      "password": "scrypt:32768:8:1$XdLMyw8WAh5V0OSg$9de759104f691655bdd05f9e6a35fd3d352f0287f80d7ba454a18347d4a5d7859ab2e3d656fdef6c0c09a4dbdddeac0938d976a87dea6f6f0ab93eef1c8a407a",
+      "role": "student",
+      "student_id": "345435",
+      "year_level": "2nd Year",
+      "course": "Bachelor of Science in Computer Science",
+      "teacher_ids": [
+        2
+      ],
+      "teacher_groups": {
+        "2": "B"
+      }
+    },
+    {
+      "id": 5,
+      "name": "jellian omerez",
+      "email": "jellianomerez@ckcm.edu.ph",
+      "username": "jellian",
+      "password": "scrypt:32768:8:1$219Bc4qgdBYs2ofc$2e7986c93c8e10f3984145bc8f256c3904bd65a08af5356ae714da8f43ce5958446765bd6803d670387e79a447b69fe2996dd0a74854d0b11072a9520035753e",
+      "role": "student",
+      "student_id": "312564",
+      "year_level": "2nd Year",
+      "course": "Bachelor of Science in Computer Science",
+      "teacher_ids": []
+    }
+  ],
+  "grades": [],
+  "schedules": [
+    {
+      "id": 2,
+      "teacher_id": 2,
+      "course": "Bachelor of Science in Computer Science",
+      "year_level": "2nd Year",
+      "subject": "CCS 2",
+      "set_group": "A",
+      "day": "Monday - Thursday",
+      "time": "1:00 PM - 2:30 PM",
+      "room": "Room 12"
+    }
+  ],
+  "subject_assignments": [
+    {
+      "id": 2,
+      "subject": "CCS 2",
+      "teacher_id": 2,
+      "course": "Bachelor of Science in Computer Science",
+      "year_level": "2nd Year"
+    }
+  ],
+  "grade_policy": {
+    "Prelim Exam": 25.0,
+    "Midterm Exam": 25.0,
+    "Semi-Final Exam": 25.0,
+    "Final Exam": 25.0
+  },
+  "bug_reports": [],
+  "announcements": [],
+  "next_user_id": 6,
+  "next_schedule_id": 3,
+  "next_assignment_id": 3,
+  "courses": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Business Administration",
+    "Bachelor of Science in Education",
+    "Bachelor of Science in Criminology",
+    "Bachelor of Science in Social Work"
+  ],
+  "programs": {
+    "BSCS": "Bachelor of Science in Computer Science",
+    "BSBA": "Bachelor of Science in Business Administration",
+    "BSEd": "Bachelor of Science in Education",
+    "BSCrim": "Bachelor of Science in Criminology",
+    "BSSW": "Bachelor of Science in Social Work"
+  }
+}
