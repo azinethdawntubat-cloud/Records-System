@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Manage Grades - Student Records{% endblock %}
+{% block topbar_title %}Manage Grades{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <p class="eyebrow">GRADE MANAGEMENT</p>
+        <h1>{{ student.name }}</h1>
+        <p class="muted">{{ student.student_id }} &middot; {{ student.course }} &middot; {{ student.year_level }} &middot; {{ student.email }}</p>
+    </div>
+    <a class="btn secondary" href="{{ url_for('teacher_students') }}">Back to My Students</a>
+</div>
+
+<div class="form-wrap grade-layout">
+    <section class="card">
+        <div class="card-heading"><div><h2>Exam Scores</h2><p>Enter all four exam scores. The weighted computed grade is saved to the student's academic record.</p></div></div>
+        {% if student_assignments %}
+        <form method="POST">
+            <label>Assigned Subject</label>
+            <select name="assignment_id" required>
+                <option value="" disabled selected>Select subject</option>
+                {% for row in student_assignments %}
+                    <option value="{{ row.assignment.id }}">{{ row.assignment.subject }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Academic Period</label>
+            <select name="semester" required>
+                <option value="" disabled selected>Select academic period</option>
+                {% for period in ACADEMIC_PERIODS %}
+                    <option value="{{ period }}">{{ period }}</option>
+                {% endfor %}
+            </select>
+
+            {% for component in GRADE_COMPONENTS %}
+                <label>{{ component }} grade (1.00-5.00)</label>
+                <input type="number" name="{{ component }}" min="1" max="5" step="0.01" required>
+            {% endfor %}
+
+            <button class="btn primary full" type="submit">Compute and Save Grade</button>
+        </form>
+        {% else %}
+            <div class="empty">No subjects assigned to you for this student's cohort.</div>
+        {% endif %}
+    </section>
+
+    <section class="card">
+        <div class="card-heading"><div><h2>Recorded Grades</h2><p>Computed exam averages are saved to Academic Records.</p></div></div>
+
+        {% if student_grades %}
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Period</th><th>Subject</th><th>Prelim</th><th>Midterm</th><th>Semi-Final</th><th>Final</th><th>Computed Grade</th></tr></thead>
+                    <tbody>
+                    {% for grade in student_grades %}
+                        <tr>
+                            <td>{{ grade.semester }}</td>
+                            <td>{{ grade.subject }}</td>
+                            {% for component in GRADE_COMPONENTS %}
+                                <td>{{ grade.scores.get(component, "—") if grade.scores else "—" }}</td>
+                            {% endfor %}
+                            <td><b>{{ grade.grade }}</b></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty">No grades have been added yet.</div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

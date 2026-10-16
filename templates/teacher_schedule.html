@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Group Schedules - Student Records{% endblock %}
+{% block topbar_title %}Group Schedules{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <p class="eyebrow">TEACHER &middot; {{ user.course or "—" }}</p>
+        <h1>Group Schedules</h1>
+        <p class="muted">Create a schedule for all assigned students in Set A or Set B.</p>
+    </div>
+    <a class="btn secondary" href="{{ url_for('teacher_students') }}">Back to My Students</a>
+</div>
+
+<div class="form-wrap grade-layout">
+    <section class="card">
+        <div class="card-heading"><div><h2>Add Schedule</h2><p>Schedules appear for students matching the subject's course, year, and set.</p></div></div>
+        {% if teacher_assignments %}
+        <form method="POST">
+            <label>Assigned Subject</label>
+            <select name="assignment_id" required>
+                <option value="" disabled selected>Select subject</option>
+                {% for assignment in teacher_assignments %}
+                    <option value="{{ assignment.id }}">{{ assignment.subject }} · {{ assignment.course }} · {{ assignment.year_level }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Student Group</label>
+            <select name="group" required>
+                <option value="A">Set A</option>
+                <option value="B">Set B</option>
+            </select>
+
+            <label>Day</label>
+            <select name="day" required>
+                <option value="" disabled selected>Select schedule days</option>
+                {% for day in SCHEDULE_DAY_OPTIONS %}
+                    <option value="{{ day }}">{{ day }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Time</label>
+            <select name="time" required>
+                <option value="" disabled selected>Select time</option>
+                {% for slot in TIME_SLOTS %}
+                    <option value="{{ slot }}">{{ slot }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Room</label>
+            <input type="text" name="room" placeholder="e.g. Room 204" required>
+
+            <button class="btn primary full" type="submit">Assign Schedule to Set</button>
+        </form>
+        {% else %}
+            <div class="empty">No subjects have been assigned to your course and year levels yet.</div>
+        {% endif %}
+    </section>
+
+    <section class="card">
+        <div class="card-heading"><div><h2>Current Schedules</h2><p>{{ teacher_schedules|length }} schedule entry(ies).</p></div></div>
+
+        {% if teacher_schedules %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Set</th><th>Subject</th><th>Year Level</th><th>Day</th><th>Time</th><th>Room</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                {% for item in teacher_schedules %}
+                    <tr>
+                        <td>Set {{ item.set_group }}</td>
+                        <td>{{ item.subject }}</td>
+                        <td>{{ item.year_level }}</td>
+                        <td>{{ item.day }}</td>
+                        <td>{{ item.time }}</td>
+                        <td>{{ item.room }}</td>
+                        <td class="actions">
+                            <form method="POST" action="{{ url_for('delete_schedule', schedule_id=item.id) }}" onsubmit="return confirm('Delete this schedule entry?');">
+                                <button class="btn small danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <div class="empty">No group schedules have been posted yet.</div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Edit Assignment - Admin{% endblock %}
+{% block topbar_title %}Edit Assignment{% endblock %}
+
+{% block content %}
+<div class="form-wrap single">
+    <div class="form-card">
+        <p class="eyebrow">ADMINISTRATION</p>
+        <h1>Edit Subject Assignment</h1>
+        <p class="muted">Change the subject, handling teacher, or year level for this course cohort.</p>
+
+        <form method="POST">
+            <label>Subject</label>
+            <input type="text" name="subject" value="{{ assignment.subject }}" required>
+
+            <label>Handling Teacher</label>
+            <select name="teacher_id" required>
+                {% for teacher in teachers %}
+                    <option value="{{ teacher.id }}" {% if teacher.id == assignment.teacher_id %}selected{% endif %}>{{ teacher.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Year Level</label>
+            <select name="year_level" required>
+                {% for level in YEAR_LEVELS %}
+                    <option value="{{ level }}" {% if level == assignment.year_level %}selected{% endif %}>{{ level }}</option>
+                {% endfor %}
+            </select>
+
+            <button class="btn primary full" type="submit">Save Changes</button>
+        </form>
+
+        <p class="form-footer"><a href="{{ url_for('admin_assignments') }}">Back to All Assignments</a></p>
+    </div>
+</div>
+{% endblock %}

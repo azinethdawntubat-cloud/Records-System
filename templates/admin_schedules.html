@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}All Schedules - Admin{% endblock %}
+{% block topbar_title %}Schedules{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <p class="eyebrow">ADMINISTRATION</p>
+        <h1>Class Schedules</h1>
+        <p class="muted">View, add, edit, or remove any student's schedule entries.</p>
+    </div>
+    <a class="btn secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</div>
+
+<div>
+    <section class="card">
+        <div class="card-heading"><div><h2>All Schedule Entries</h2><p>{{ rows|length }} schedule entry(ies) saved. Teachers create schedules for their assigned subjects; administrators can review and edit them here.</p></div></div>
+
+        {% if rows %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Student / Cohort</th><th>Teacher</th><th>Day</th><th>Time</th><th>Subject</th><th>Room</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                {% for row in rows %}
+                    <tr>
+                        <td><b>{{ row.student.name if row.student else (row.schedule.course ~ " · " ~ row.schedule.year_level ~ " · Set " ~ row.schedule.set_group if row.schedule.course else "—") }}</b></td>
+                        <td>{{ row.teacher.name if row.teacher else "—" }}</td>
+                        <td><b>{{ row.schedule.day }}</b></td>
+                        <td>{{ row.schedule.time }}</td>
+                        <td>{{ row.schedule.subject }}</td>
+                        <td>{{ row.schedule.room }}</td>
+                        <td class="actions">
+                            <a class="btn small secondary" href="{{ url_for('admin_edit_schedule', schedule_id=row.schedule.id) }}">Edit</a>
+                            <form method="POST" action="{{ url_for('admin_delete_schedule', schedule_id=row.schedule.id) }}" onsubmit="return confirm('Delete this schedule entry?');">
+                                <button class="btn small danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <div class="empty">No schedule entries yet.</div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

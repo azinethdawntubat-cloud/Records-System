@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Teacher Dashboard - Student Records{% endblock %}
+{% block topbar_title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <p class="eyebrow">TEACHER DASHBOARD</p>
+        <h1>Welcome, {{ user.name }}</h1>
+        <p class="muted">{{ message }} &middot; Course handled: <b>{{ user.course or "—" }}</b></p>
+    </div>
+    <div class="actions">
+        <a class="btn secondary" href="{{ url_for('teacher_students') }}">My Students</a>
+        <a class="btn primary" href="{{ url_for('manage_teacher_schedules') }}">Group Schedules</a>
+    </div>
+</div>
+
+<section class="card">
+    <div class="card-heading">
+        <div><h2>Search Students</h2><p>Already-assigned students are hidden from your results but remain visible to other teachers.</p></div>
+    </div>
+
+    <form method="GET" class="search-bar">
+        <div class="field">
+            <label>Year Level</label>
+            <select name="year_level">
+                <option value="all" {% if selected_year == "all" %}selected{% endif %}>All Year Levels</option>
+                {% for level in YEAR_LEVELS %}
+                    <option value="{{ level }}" {% if selected_year == level %}selected{% endif %}>{{ level }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Student ID</label>
+            <input
+                type="text"
+                id="studentIdSearchInput"
+                name="student_id_search"
+                inputmode="numeric"
+                maxlength="6"
+                placeholder="Search by ID"
+                value="{{ student_id_search }}">
+        </div>
+
+        <button class="btn primary small" type="submit">Search</button>
+        <a class="btn secondary small" href="{{ url_for('dashboard') }}">Reset</a>
+    </form>
+
+    {% if students %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Student ID</th><th>Name</th><th>Course</th><th>Year Level</th><th>Email</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                    <td><b>{{ student.student_id }}</b></td>
+                    <td>{{ student.name }}</td>
+                    <td><span class="course-tag">{{ student.course or "—" }}</span></td>
+                    <td>{{ student.year_level or "—" }}</td>
+                    <td>{{ student.email }}</td>
+                    <td class="actions">
+                        <form method="POST" action="{{ url_for('select_student', student_id=student.id) }}">
+                            <button class="btn small primary" type="submit">Assign to Set A</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="empty">No students match this search.</div>
+    {% endif %}
+</section>
+{% endblock %}
